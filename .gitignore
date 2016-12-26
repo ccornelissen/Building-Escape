@@ -60,3 +60,7 @@ Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+Project/UDEM_BuildingEscape/Intermediate/
+Project/UDEM_BuildingEscape/Saved/Cooked/WindowsNoEditor/Engine/Content/MobileResources/HUD/AnalogHat.uasset
+Project/UDEM_BuildingEscape/Saved/
+Project/UDEM_BuildingEscape/Content/StarterContent/
