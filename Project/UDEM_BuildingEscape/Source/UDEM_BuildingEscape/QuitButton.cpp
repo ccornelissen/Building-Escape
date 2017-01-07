@@ -10,9 +10,7 @@ UQuitButton::UQuitButton()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 
@@ -20,9 +18,6 @@ UQuitButton::UQuitButton()
 void UQuitButton::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
 
@@ -30,13 +25,13 @@ void UQuitButton::BeginPlay()
 void UQuitButton::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
-	// ...
 }
 
+//Tell blueprint to trigger the exit code
 void UQuitButton::ExitGame()
 {
 	PlayQuitSound.Broadcast();
+
 	InitiateQuit.Broadcast();
 }
 

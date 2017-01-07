@@ -23,19 +23,20 @@ public:
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
 	UPROPERTY(BlueprintAssignable)
-	FDoorEvent OnOpen;
+	FDoorEvent OnOpen; //Event to tell the door to open
 
 	UPROPERTY(BlueprintAssignable)
-	FDoorEvent OnClose;
+	FDoorEvent OnClose; //Event to close the door
 	
 private:
-	UPROPERTY(EditAnywhere)
-	float fMassToOpen = 25.0f;
+	UPROPERTY(EditDefaultsOnly)
+	float fMassToOpen = 25.0f; //Mass required to open the door
 
+	//Function that gets the total mass of all actors in the trigger
 	float GetTotalMassOnPlate();
 
 	UPROPERTY(EditAnywhere)
-	ATriggerVolume* PressurePlate = nullptr;
+	ATriggerVolume* PressurePlate = nullptr; //Trigger volume that holds actors that need mass checked
 
 	AActor* Owner = nullptr;
 };

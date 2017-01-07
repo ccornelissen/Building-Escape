@@ -6,7 +6,7 @@
 #include "ColorTag.generated.h"
 
 UENUM()
-enum class ERockColor : uint8
+enum class ERockColor : uint8 //Enum to store the rocks current color
 {
 	RC_Red,
 	RC_Yellow,
@@ -28,7 +28,5 @@ public:
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
-	ERockColor RockColor;
-		
-	
+	ERockColor RockColor; //Enum to store the rocks current color
 };

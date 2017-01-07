@@ -11,7 +11,7 @@ USimonSaysButton::USimonSaysButton()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 
@@ -20,7 +20,6 @@ void USimonSaysButton::BeginPlay()
 {
 	Super::BeginPlay();
 }
-
 
 // Called every frame
 void USimonSaysButton::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
@@ -36,6 +35,7 @@ void USimonSaysButton::SimonAnswer()
 		return;
 	}
 
+	//Getting a reference to the simon door script from the actor
 	USimonSaysDoor* SimonSaysDoor = SimonDoor->FindComponentByClass<USimonSaysDoor>();
 
 	if (SimonSaysDoor == nullptr)

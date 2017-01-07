@@ -19,6 +19,7 @@ void UUserHighlight::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Get the static mesh component
 	HighlightActor = GetOwner()->FindComponentByClass<UStaticMeshComponent>();
 }
 
@@ -35,7 +36,7 @@ void UUserHighlight::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 		{
 			return;
 		}
-
+		 //Turning off the highlight
 		HighlightActor->SetRenderCustomDepth(false);
 	}
 
@@ -47,8 +48,11 @@ void UUserHighlight::SetMaterial()
 	{
 		return;
 	}
+
+	//Turning on the highlight
 	HighlightActor->SetRenderCustomDepth(true);
 
+	//Set the revert timer to current time
 	fMaterialRevertTimer = GetWorld()->GetTimeSeconds();
 }
 

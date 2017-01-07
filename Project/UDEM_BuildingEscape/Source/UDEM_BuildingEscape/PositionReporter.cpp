@@ -11,10 +11,6 @@ UPositionReporter::UPositionReporter()
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
-
-	
-
-	// ...
 }
 
 
@@ -23,12 +19,11 @@ void UPositionReporter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Debug script just getting obejcts to report their names and locations.
 	FString MeshName = GetOwner()->GetName();
 	FString MeshPos = GetOwner()->GetActorLocation().ToString();
 
 	UE_LOG(LogTemp, Warning, TEXT("%s at location %s!"), *MeshName, *MeshPos);
-	// ...
-	
 }
 
 
@@ -36,7 +31,5 @@ void UPositionReporter::BeginPlay()
 void UPositionReporter::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
-	// ...
 }
 

@@ -21,13 +21,17 @@ public:
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
+	//Function used to turn on custom depth to show outline
 	void SetMaterial();
 
 private:
+	//Reference to the highlight actor
 	UStaticMeshComponent* HighlightActor = nullptr;
 
+	//Timer used to turn off the highlight when player leaves it
 	float fMaterialRevertTimer;
 
+	//How long before the highlight turns off
 	UPROPERTY(EditAnywhere)
 	float fMaterialRevertTime = 0.2f;
 	

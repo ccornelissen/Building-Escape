@@ -23,21 +23,21 @@ public:
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
 	UPROPERTY(BlueprintAssignable)
-	FColorDoorEvent OnOpen;
+	FColorDoorEvent OnOpen; //Blueprint event to trigger the opening of the door
 
 	UPROPERTY(BlueprintAssignable)
-	FColorDoorEvent OnClose;
+	FColorDoorEvent OnClose; //Blueprint event to trigger the closing of the door
 
 private:
 	UPROPERTY(EditAnywhere)
-	AActor* RedPlatform = nullptr;
-	bool bRedSet = false;
+	AActor* RedPlatform = nullptr; //Red platform actor reference
+	bool bRedSet = false; //Bool to check if red platform has a red rock on it 
 
 	UPROPERTY(EditAnywhere)
-	AActor* BluePlatform = nullptr;
-	bool bBlueSet = false;
+	AActor* BluePlatform = nullptr; //Blue platform actor reference 
+	bool bBlueSet = false; //Blue bool check
 
 	UPROPERTY(EditAnywhere)
-	AActor* YellowPlatform = nullptr;
-	bool bYellowSet = false;
+	AActor* YellowPlatform = nullptr; //Yellow platform
+	bool bYellowSet = false; //Yellow bool check
 };

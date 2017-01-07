@@ -6,7 +6,7 @@
 #include "SimonSaysButton.generated.h"
 
 UENUM()
-enum class ESimonColor : uint8
+enum class ESimonColor : uint8 //Enum to hold the buttons color
 {
 	SC_Red,
 	SC_Yellow,
@@ -32,8 +32,8 @@ public:
 	ESimonColor SimonColor = ESimonColor::SC_Red;
 
 	UPROPERTY(EditAnywhere)
-	AActor* SimonDoor = nullptr;
+	AActor* SimonDoor = nullptr; //Regerence to the simon door
 
+	//Function to pass on the answer
 	void SimonAnswer();
-	
 };

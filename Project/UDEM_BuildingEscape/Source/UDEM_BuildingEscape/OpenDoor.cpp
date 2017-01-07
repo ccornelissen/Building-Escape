@@ -28,7 +28,10 @@ void UOpenDoor::BeginPlay()
 void UOpenDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-	
+
+	//TODO move this out of tick, should be able to check when the trigger volume is active
+
+	//Checking if the mass is enough to open the door
 	if (GetTotalMassOnPlate() > fMassToOpen)
 	{
 		OnOpen.Broadcast();
@@ -43,7 +46,7 @@ float UOpenDoor::GetTotalMassOnPlate()
 {
 	float fTotalMass = 0.0f;
 
-	//Find all overlapping actors
+	//Actor array set up to hold actors that will have their weight checked
 	TArray<AActor*> OverlappingActors;
 	
 	if (PressurePlate == nullptr)
@@ -51,6 +54,8 @@ float UOpenDoor::GetTotalMassOnPlate()
 		UE_LOG(LogTemp, Error, TEXT("Pressure plate not set on %s."), *Owner->GetName());
 		return fTotalMass;
 	}
+
+	//Getting all the actors in the trigger volume
 	PressurePlate->GetOverlappingActors(OverlappingActors);
 
 	//Iterate through and add their masses
@@ -62,6 +67,8 @@ float UOpenDoor::GetTotalMassOnPlate()
 			UE_LOG(LogTemp, Error, TEXT("CurActor returned a nullptr on GetTotalMassOnPlate()"));
 			return fTotalMass;
 		}
+		
+		//Get actors primitive component to check weight
 		UPrimitiveComponent* ActPrim = CurActor->FindComponentByClass<UPrimitiveComponent>();
 
 		if (ActPrim != nullptr)

@@ -1,9 +1,9 @@
 {
-	"Changelist" : 3224400,
+	"Changelist" : 3241561,
 	"CompatibleChangelist" : 3195953,
 	"BuildId" : "",
 	"Modules" : 
 	{
-		"UDEM_BuildingEscape" : "UE4Editor-UDEM_BuildingEscape.dll"
+		"UDEM_BuildingEscape" : "UE4Editor-UDEM_BuildingEscape-9340.dll"
 	}
 }

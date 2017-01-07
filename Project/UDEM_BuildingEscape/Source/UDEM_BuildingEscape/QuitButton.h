@@ -22,11 +22,13 @@ public:
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
+	//Function to call blueprint events
 	void ExitGame();
 
 	UPROPERTY(BlueprintAssignable)
-	FQuitButtonEvent PlayQuitSound;
+	FQuitButtonEvent PlayQuitSound; //Play quit SFX
+
 	UPROPERTY(BlueprintAssignable)
-	FQuitButtonEvent InitiateQuit;
+	FQuitButtonEvent InitiateQuit; //Trigger the blueprint to close the game.
 	
 };

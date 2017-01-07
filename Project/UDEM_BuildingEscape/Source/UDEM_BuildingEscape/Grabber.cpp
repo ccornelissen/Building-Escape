@@ -23,11 +23,12 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//Get player controller
 	Controller = GetWorld()->GetFirstPlayerController();
+
 	SetPhysicsHandle();
 
 	SetUserInput();
-
 }
 
 // Called every frame
@@ -35,6 +36,7 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
+	//Check if the player is looking at an interactable object
 	HighlightHit(GetTraceHit());
 
 	//If physics handle is attached
@@ -43,14 +45,13 @@ void UGrabber::TickComponent( float DeltaTime, ELevelTick TickType, FActorCompon
 		return; //nullptr check
 	}
 
+	//Check if the player is holding an object
 	if (PhysicsHandle->GrabbedComponent)
 	{
 		FVector TraceEnd = GetLineTraceEnd();
 		//Move object we're holding
 		PhysicsHandle->SetTargetLocation(TraceEnd);
 	}
-
-	//If the raycast hits a grabbable object, allow player to pick up the object. 
 
 }
 
@@ -59,6 +60,7 @@ void UGrabber::SetUserInput()
 {
 	//Getting the users input component and error checking
 	UserInput = GetOwner()->FindComponentByClass<UInputComponent>();
+
 	if (UserInput != nullptr)
 	{
 		//Bind Input Axis
@@ -77,11 +79,8 @@ void UGrabber::SetPhysicsHandle()
 {
 	//Find attached physics handle
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-	if (PhysicsHandle != nullptr)
-	{
-		//All is well in the world
-	}
-	else
+
+	if (PhysicsHandle == nullptr)
 	{
 		FString sThisPawn = GetOwner()->GetName();
 		UE_LOG(LogTemp, Error, TEXT("%s IS LACKING A PHYSICS HANDLE!"), *sThisPawn);
@@ -93,13 +92,13 @@ void UGrabber::HighlightHit(FHitResult LineTraceHit)
 {
 	if (LineTraceHit.Actor != nullptr)
 	{
-		//TODO Get the UUserhighlight component from the actor
+		//Get the UUserhighlight component from the actor
 		UUserHighlight* ActorHighlight = LineTraceHit.Actor->FindComponentByClass<UUserHighlight>();
 
 		//Check to make sure the actor has the component
 		if (ActorHighlight != nullptr)
 		{
-			//Turnign on the post process
+			//Turning on the post process
 			ActorHighlight->SetMaterial();
 		}
 	}
@@ -134,7 +133,7 @@ void UGrabber::Grab()
 				ColorButton->ChangeColor();
 			}
 		}
-		else if (ActorHit->ActorHasTag("SimonSaysButton"))
+		else if (ActorHit->ActorHasTag("SimonSaysButton")) //If it is the simon says button enter the answer
 		{
 			USimonSaysButton* SimonButton = ActorHit->FindComponentByClass<USimonSaysButton>();
 
@@ -143,7 +142,7 @@ void UGrabber::Grab()
 				SimonButton->SimonAnswer();
 			}
 		}
-		else if (ActorHit->ActorHasTag("QuitButton"))
+		else if (ActorHit->ActorHasTag("QuitButton")) //If it is the quit button quit the game
 		{
 			UQuitButton* QuitButton = ActorHit->FindComponentByClass<UQuitButton>();
 
@@ -155,6 +154,7 @@ void UGrabber::Grab()
 	}
 }
 
+//Function that detaches the current held object on the physics handle
 void UGrabber::Release()
 {
 	if (PhysicsHandle == nullptr)
@@ -164,8 +164,10 @@ void UGrabber::Release()
 	PhysicsHandle->ReleaseComponent();
 }
 
+//Getting the line trace hit
 const FHitResult UGrabber::GetTraceHit()
 {
+	//Get the end vector of the trace
 	FVector GrabberTraceEnd = GetLineTraceEnd();
 
 	FHitResult LineTraceHit;
@@ -191,6 +193,7 @@ const FHitResult UGrabber::GetTraceHit()
 	return LineTraceHit;
 }
 
+//Getting the max length of the line trace
 const FVector UGrabber::GetLineTraceEnd()
 {
 	Controller->GetPlayerViewPoint(PlayerLoc, PlayerRot);

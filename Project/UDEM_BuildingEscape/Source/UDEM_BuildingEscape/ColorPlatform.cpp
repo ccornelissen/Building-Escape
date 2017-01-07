@@ -12,8 +12,6 @@ UColorPlatform::UColorPlatform()
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -21,9 +19,6 @@ UColorPlatform::UColorPlatform()
 void UColorPlatform::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
 
@@ -31,14 +26,15 @@ void UColorPlatform::BeginPlay()
 void UColorPlatform::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
+	
+	//TODO move this out of tick, should be able to check when the trigger contains overlaps
 	CheckColor();
-
-	// ...
 }
 
+//Function to check the colors of the actors
 void UColorPlatform::CheckColor()
 {
+	//Setting up array to hold actors.
 	TArray<AActor*> OverlappingActors;
 
 	if (ColorTrigger == nullptr)
@@ -47,8 +43,10 @@ void UColorPlatform::CheckColor()
 		return;
 	}
 
+	//Putting any overlapping actors in the array
 	ColorTrigger->GetOverlappingActors(OverlappingActors);
 
+	//Loop through the actors in the array
 	for (AActor* CurActor : OverlappingActors)
 	{
 		if (CurActor == nullptr)
@@ -57,6 +55,7 @@ void UColorPlatform::CheckColor()
 			return;
 		}
 
+		//Get the actors color tag
 		UColorTag* ActorColor = CurActor->FindComponentByClass<UColorTag>();
 
 		if (ActorColor == nullptr)
@@ -65,6 +64,7 @@ void UColorPlatform::CheckColor()
 			return;
 		}
 
+		//Check if actors color tag matches the platform color tag. 
 		if (ColorEnum == EColorEnum::CE_Red)
 		{
 			if (ActorColor->RockColor == ERockColor::RC_Red)
@@ -88,14 +88,16 @@ void UColorPlatform::CheckColor()
 		}
 	}
 
+	//If no actors are overlapping set false
 	if (OverlappingActors.Num() == 0)
 	{
-		SetColorCorrect();
+		SetColorCorrectFalse();
 	}
 	
 }
 
-void UColorPlatform::SetColorCorrect()
+//Simply resets the bool back to false
+void UColorPlatform::SetColorCorrectFalse()
 {
 	bColorCorrect = false;
 }

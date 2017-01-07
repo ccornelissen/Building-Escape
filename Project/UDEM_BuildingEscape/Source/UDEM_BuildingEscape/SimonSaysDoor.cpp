@@ -11,8 +11,6 @@ USimonSaysDoor::USimonSaysDoor()
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -23,11 +21,12 @@ void USimonSaysDoor::BeginPlay()
 
 	if (SimonPanel != nullptr)
 	{
+		//Get reference to the simonpanels mesh to change its color
 		SimonPanelMesh = SimonPanel->FindComponentByClass<UStaticMeshComponent>();
 	}
 
+	//Set the sequence to the beginning (just for safety)
 	SequenceReset();
-	
 }
 
 
@@ -42,7 +41,7 @@ void USimonSaysDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 	if (SimonArray.Num() != 0)
 	{
 		//If the current element exists within the array allow color change.
-		if (iString < SimonArray.Num())
+		if (iArrayLength < SimonArray.Num())
 		{
 			if ((fTimer > fWorldTime) && bToggleChange == true) //If the timer allows and a color change is possible
 			{
@@ -58,7 +57,7 @@ void USimonSaysDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActor
 		}
 		else //Reset the array to restart the loop
 		{
-			iString = 0;
+			iArrayLength = 0;
 		}
 	}
 }
@@ -68,27 +67,27 @@ void USimonSaysDoor::SequenceSuccess()
 {
 	if (PanelPhase == EPanelPhase::PP_Phase1)
 	{
-		PanelPhase = EPanelPhase::PP_Phase2;
-		SequenceReset();
-		iString = 0;
+		PanelPhase = EPanelPhase::PP_Phase2; //Set to next phase
+		SequenceReset(); //reset seqeunce
+		iArrayLength = 0; //Reset the array length
 	}
 	else if (PanelPhase == EPanelPhase::PP_Phase2)
 	{
 		PanelPhase = EPanelPhase::PP_Phase3;
 		SequenceReset();
-		iString = 0;
+		iArrayLength = 0;
 	}
 	else if (PanelPhase == EPanelPhase::PP_Phase3)
 	{
 		PanelPhase = EPanelPhase::PP_Phase4;
 		SequenceReset();
-		iString = 0;
+		iArrayLength = 0;
 		SequenceSuccess();
 	}
 	else if (PanelPhase == EPanelPhase::PP_Phase4)
 	{
 		DoorOpen.Broadcast();
-		iString = 0;
+		iArrayLength = 0;
 	}
 }
 
@@ -102,7 +101,8 @@ void USimonSaysDoor::SequenceReset()
 			SimonArray.Empty();
 		}
 
-		SimonArray.Emplace(sBlack);
+		//The emplace list below is what controls what colors are in the seqeunce
+		SimonArray.Emplace(sBlack); //A black panel must always come first so the player knows where the sequence resets
 		SimonArray.Emplace(sRed);
 		SimonArray.Emplace(sYellow);
 	}
@@ -198,7 +198,7 @@ void USimonSaysDoor::ArrayCorrect()
 	//Remove one from the array so the user no longer has to answer.
 	SimonArray.RemoveAt(1);
 
-	if (SimonArray.Num() == 1)
+	if (SimonArray.Num() == 1) //If down to 1 in the array (only the black panel) move onto next phase
 	{
 		SequenceSuccess();
 	}
@@ -228,36 +228,36 @@ void USimonSaysDoor::SimonPanelColorSequence()
 //Sets the color of the panel based on the strings set in the array.
 void USimonSaysDoor::PanelColorLoop()
 {
-	if (SimonArray[iString] == sRed)
+	if (SimonArray[iArrayLength] == sRed)
 	{
 		if (SimonPanelMesh != nullptr)
 		{
 			SimonPanelMesh->SetMaterial(0, RedMaterial); //Changing the panels material color
-			iString++;
+			iArrayLength++;
 		}
 	}
-	else if (SimonArray[iString] == sYellow)
+	else if (SimonArray[iArrayLength] == sYellow)
 	{
 		if (SimonPanelMesh != nullptr)
 		{
 			SimonPanelMesh->SetMaterial(0, YellowMaterial);
-			iString++;
+			iArrayLength++;
 		}
 	}
-	else if (SimonArray[iString] == sBlue)
+	else if (SimonArray[iArrayLength] == sBlue)
 	{
 		if (SimonPanelMesh != nullptr)
 		{
 			SimonPanelMesh->SetMaterial(0, BlueMaterial);
-			iString++;
+			iArrayLength++;
 		}
 	}
-	else if (SimonArray[iString] == sBlack)
+	else if (SimonArray[iArrayLength] == sBlack)
 	{
 		if (SimonPanelMesh != nullptr)
 		{
 			SimonPanelMesh->SetMaterial(0, BlackMaterial);
-			iString++;
+			iArrayLength++;
 		}
 	}
 }

@@ -11,7 +11,7 @@ UColorButton::UColorButton()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 
@@ -27,7 +27,7 @@ void UColorButton::TickComponent(float DeltaTime, ELevelTick TickType, FActorCom
 
 void UColorButton::ChangeColor()
 {
-	//Find all overlapping actors
+	//Creating an array to hold any overlapping actors
 	TArray<AActor*> OverlappingActors;
 
 	if (ColorTrigger == nullptr)
@@ -35,8 +35,11 @@ void UColorButton::ChangeColor()
 		UE_LOG(LogTemp, Error, TEXT("Color trigger is not set on the button"));
 		return;
 	}
+
+	//Adding overlapping actors to the array
 	ColorTrigger->GetOverlappingActors(OverlappingActors);
 
+	//Play fail SFX if player hits the button but nothing is on the platform.
 	if (OverlappingActors.Num() == 0)
 	{
 		ColorButtonFail.Broadcast();
@@ -51,19 +54,24 @@ void UColorButton::ChangeColor()
 			UE_LOG(LogTemp, Error, TEXT("CurActor returned a nullptr on GetTotalMassOnPlate()"));
 		}
 
+		//Getting static mesh component.
 		UStaticMeshComponent* ActorMesh = CurActor->FindComponentByClass<UStaticMeshComponent>();
 
+		//Checking set color of the actor
 		UColorTag* ActorColor = CurActor->FindComponentByClass<UColorTag>();
 
 		if (ActorColor != nullptr)
 		{
 			if (ActorMesh != nullptr)
 			{
+				//Setting the material color of the actors
 				ActorMesh->SetMaterial(0, ChangeMaterial);
 
+				//Play success SFX to the player
 				ColorButtonSuccess.Broadcast();
 			}
 
+			//Set the actor enum color based on pressed button color
 			if (ButtonColor == EButtonColor::BC_Red)
 			{
 				ActorColor->RockColor = ERockColor::RC_Red;

@@ -21,9 +21,6 @@ UColorDoor::UColorDoor()
 void UColorDoor::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
 
@@ -32,9 +29,11 @@ void UColorDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComp
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
+	//TODO make the platform checks a non-tick function, should only check when the platform state changes. 
+
 	if (RedPlatform != nullptr)
 	{
-		bRedSet = RedPlatform->FindComponentByClass<UColorPlatform>()->bColorCorrect;
+		bRedSet = RedPlatform->FindComponentByClass<UColorPlatform>()->bColorCorrect; //Checking if the red platform has the correct actor
 	}
 	else
 	{
@@ -43,7 +42,7 @@ void UColorDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComp
 
 	if (YellowPlatform != nullptr)
 	{
-		bYellowSet = YellowPlatform->FindComponentByClass<UColorPlatform>()->bColorCorrect;
+		bYellowSet = YellowPlatform->FindComponentByClass<UColorPlatform>()->bColorCorrect; //Yellow platform check
 	}
 	else
 	{
@@ -52,7 +51,7 @@ void UColorDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComp
 
 	if (BluePlatform != nullptr)
 	{
-		bBlueSet = BluePlatform->FindComponentByClass<UColorPlatform>()->bColorCorrect;
+		bBlueSet = BluePlatform->FindComponentByClass<UColorPlatform>()->bColorCorrect; //Blue platform check
 	}
 	else
 	{
@@ -62,13 +61,11 @@ void UColorDoor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComp
 
 	if (bRedSet == true && bBlueSet == true && bYellowSet == true)
 	{
-		OnOpen.Broadcast();
+		OnOpen.Broadcast(); //If all platforms are correctly set open the door
 	}
 	else
 	{
 		OnClose.Broadcast();
 	}
-
-	// ...
 }
 
